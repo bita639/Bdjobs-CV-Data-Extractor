@@ -9,8 +9,24 @@
 <body>
 
     {% if something %}
-    <p>Hello</p>
-    <p>Here is your Output {{ sum }} </p>
+    <p>Hello, {{ name }}'s CV Data extracted Succesfully</p>
+
+    <p>Here are the Basic Info about {{ name }}</p>
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ email }}</td>
+          <td>{{ phone }}</td>
+        </tr>
+
+        
+     
+      </table>
     {% else %}
     <a href="{% url 'upload' %}">Please upload a file</a>
     {% endif %}
