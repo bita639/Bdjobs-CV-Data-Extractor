@@ -21,7 +21,8 @@ from pdfApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name = 'home'),
-    path('upload/', views.upload, name='upload')
+    path('upload/', views.upload, name='upload'),
+    path('csv/',views.getfile, name='download_csv')  
 ]
 
 if settings.DEBUG:

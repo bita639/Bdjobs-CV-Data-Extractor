@@ -3,7 +3,7 @@ import re
 import pdfplumber
 import pandas as pd
 from collections import namedtuple
-
+import csv
 # Create your views here.
 def home(request):
     if request.method =="POST":
@@ -12,6 +12,9 @@ def home(request):
         name_regex = re.compile(r'\n[A-Z]+(?:\s+[A-Z]+)*\b')
 
         phoneNumber_regex = re.compile(r'^Mobile :[\s\d{11}]+$')
+
+        #phone number ulternative regex
+        # phoneNumber_regex = re.compile(r"(?<!\d)\d{11}(?!\d)")
 
         dob_regex = re.compile(r'^Date of Birth:[\s\d+/[a-zA-z+]/\d{4}]+$')
 
@@ -25,7 +28,9 @@ def home(request):
         phone_list = []
         name_list = []
         email_list = []
-
+        request.session['name_list'] = name_list
+        request.session['email_list'] = email_list
+        request.session['phone_list'] = phone_list
         total_check = 0
 
         with pdfplumber.open(file) as pdf:
@@ -62,3 +67,14 @@ def home(request):
 
 def upload(request):
     return render(request, "fileupload.html")
+
+def getfile(request):
+    name_list = request.session['name_list']
+    phone_list = request.session['phone_list']
+    email_list = request.session['email_list']
+    response = HttpResponse(content_type='text/csv')  
+    response['Content-Disposition'] = 'attachment; filename="file.csv"'  
+    writer = csv.writer(response)  
+    writer.writerow(['Name', 'Email', 'Mobile'])  
+    writer.writerow([name_list[0][0], email_list[0], phone_list[0]])  
+    return response  
